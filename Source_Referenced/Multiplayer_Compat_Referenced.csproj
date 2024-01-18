@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
@@ -18,6 +18,10 @@
     <ProjectReference Include="../Source/Multiplayer_Compat.csproj">
       <Private>false</Private>
     </ProjectReference>
+    <PackageReference Include="Krafs.Publicizer" Version="1.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.2.*</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
@@ -30,10 +34,6 @@
       <Version>1.4.*</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="Krafs.Publicizer">
-      <Version>1.0.*</Version>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <Reference Include="..\References\*.dll">
       <Private>false</Private>
     </Reference>
@@ -42,4 +42,8 @@
   <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;E:\Code\Rimworld\Multiplayer-Compatibility\Assemblies\Multiplayer_Compat.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MP_Compat2\1.4\Assemblies&quot;&#xD;&#xA;copy &quot;E:\Code\Rimworld\Multiplayer-Compatibility\Referenced\Multiplayer_Compat_Referenced.dll&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\MP_Compat2\1.4\Referenced&quot;" />
+  </Target>
 </Project>

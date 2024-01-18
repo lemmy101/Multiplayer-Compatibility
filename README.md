@@ -84,6 +84,7 @@ Quality Builder | [![url][steam]](https://steamcommunity.com/sharedfiles/filedet
 ReGrowth: Core | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569) [![url][repo]](https://github.com/Helixien/ReGrowth-Core)
 Reinforced Mechanoid 2 | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=2910050186) [![url][repo]](https://github.com/Helixien/ReinforcedMechanoids-2)
 ResearchPowl | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=2877856030) 
+Research Tree (Continued) | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=3030499331) 
 Reunion | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=1985186461) [![url][repo]](https://github.com/kyrun/rimworld-reunion)
 Rim-Effect: Core | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=2479560240) [![url][repo]](https://github.com/AndroidQuazar/RimEffect-Core)
 Rim-Effect: Drell | [![url][steam]](https://steamcommunity.com/sharedfiles/filedetails/?id=2651150217) [![url][repo]](https://github.com/AndroidQuazar/RimEffect-Drell)
