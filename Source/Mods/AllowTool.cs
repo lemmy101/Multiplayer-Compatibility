@@ -6,6 +6,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using static HarmonyLib.Code;
 
 namespace Multiplayer.Compat
 {
@@ -40,6 +41,7 @@ namespace Multiplayer.Compat
         private static bool? shiftHeldState = null;
         private static bool? controlHeldState = null;
         private static CellRect? visibleMapRectState = null;
+        private static int lastCacheTimeTicks = 0;
 
         #endregion
 
@@ -306,7 +308,14 @@ namespace Multiplayer.Compat
             if (MP.InInterface)
                 return false;
 
-            currentTime = Find.TickManager.TicksGame;
+            // Track ticks since last cache not total from TicksGame
+            if (lastCacheTimeTicks == 0)
+            {
+                lastCacheTimeTicks = Find.TickManager.TicksGame;
+            }
+
+            currentTime = Find.TickManager.TicksGame - lastCacheTimeTicks;
+
             return true;
         }
 
@@ -315,12 +324,33 @@ namespace Multiplayer.Compat
             if (!MP.IsInMultiplayer)
                 return true;
 
-            var mult = Find.TickManager.TickRateMultiplier;
-            if (mult <= 0.15f)
-                mult = 0.15f;
-            // The original method re-caches once a second. We check every 60 ticks multiplied by tick rate multiplier, so it will end up roughly every second no matter the game speed.
-            // Also handle the situation of the game being paused by assuming the multiplier is 0.15 (small value to potentially force re-cache)
-            __result = ___createdTime > 0 && ___createdTime < currentTime + (60 * mult);
+            // Just for safety, remove any floating point operations
+            int currTime = (int)currentTime;
+
+            int mult = (int)Find.TickManager.TickRateMultiplier;
+
+            // Handle paused.
+            if (mult == 0)
+            {
+                __result = currTime < 9;
+
+                // Reset cached time.
+                if (!__result)
+                    lastCacheTimeTicks = Find.TickManager.TicksGame;
+                
+                Log.Message("Cache Valid Result: " + __result + " ( Current Time:" + currTime + ", mult: " + mult + ")");
+
+                return false;
+            } 
+
+            __result = currTime < (60 * mult); 
+
+            // Reset cached time.
+            if (!__result)
+                lastCacheTimeTicks = Find.TickManager.TicksGame;
+
+            Log.Message("Cache Valid Result: " + __result + " ( Current Time:" + currTime + ", mult: " + mult + ")");
+
             return false;
         }
 
@@ -400,7 +430,7 @@ namespace Multiplayer.Compat
                     shiftHeldState = true;
 
                     var parent = Activator.CreateInstance(innerParentType);
-                
+
                     var pawn = sync.Read<Pawn>();
                     var target = sync.Read<Thing>();
                     parentInnerClassPawnField(parent) = pawn;
